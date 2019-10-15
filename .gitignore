@@ -1,0 +1,16 @@
+Builds/
+Library/
+Assets/Screenshots
+*.rar
+*.zip
+
+###
+
+obj/
+.vs/
+Temp/
+*.mp4
+*.gif
+*.apk
+*.abb
+*.csproj

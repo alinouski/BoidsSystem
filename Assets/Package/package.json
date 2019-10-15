@@ -1,0 +1,12 @@
+{
+    "name": "com.alinouski.boids",
+    "version" : "1.0.0",
+    "displayName": "Boids System",
+    "unity": "2018.3",
+    "description": "Package containing system to implement boids to your games",
+    "dependencies":
+    {
+        "com.unity.ugui": "1.0.0"
+    }
+    
+}
