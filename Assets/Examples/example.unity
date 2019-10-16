@@ -273,22 +273,22 @@ PrefabInstance:
     - target: {fileID: 3341688104174155205, guid: bcce2c4db432fa4419a7146a00f136ea,
         type: 3}
       propertyPath: spawnBoidsCount
-      value: 24
+      value: 42
       objectReference: {fileID: 0}
     - target: {fileID: 3341688104174155205, guid: bcce2c4db432fa4419a7146a00f136ea,
         type: 3}
       propertyPath: configuration.maxSpeed
-      value: 0.04
+      value: 0.06
       objectReference: {fileID: 0}
     - target: {fileID: 3341688104174155205, guid: bcce2c4db432fa4419a7146a00f136ea,
         type: 3}
       propertyPath: configuration.axeleration
-      value: 0.01
+      value: 0.09
       objectReference: {fileID: 0}
     - target: {fileID: 3341688104174155205, guid: bcce2c4db432fa4419a7146a00f136ea,
         type: 3}
       propertyPath: configuration.watchRadius
-      value: 1.19
+      value: 1.02
       objectReference: {fileID: 0}
     - target: {fileID: 3341688104174155205, guid: bcce2c4db432fa4419a7146a00f136ea,
         type: 3}
@@ -318,17 +318,22 @@ PrefabInstance:
     - target: {fileID: 3341688104174155205, guid: bcce2c4db432fa4419a7146a00f136ea,
         type: 3}
       propertyPath: preset.aligment
-      value: 0.17
+      value: 0.664
       objectReference: {fileID: 0}
     - target: {fileID: 3341688104174155205, guid: bcce2c4db432fa4419a7146a00f136ea,
         type: 3}
       propertyPath: preset.cohesion
-      value: 1
+      value: 0.571
       objectReference: {fileID: 0}
     - target: {fileID: 3341688104174155205, guid: bcce2c4db432fa4419a7146a00f136ea,
         type: 3}
       propertyPath: preset.separation
-      value: 0.76
+      value: 0.268
+      objectReference: {fileID: 0}
+    - target: {fileID: 3341688104174155205, guid: bcce2c4db432fa4419a7146a00f136ea,
+        type: 3}
+      propertyPath: unlimSpace
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bcce2c4db432fa4419a7146a00f136ea, type: 3}

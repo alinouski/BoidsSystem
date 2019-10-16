@@ -43,6 +43,16 @@ public class Boid2D : AbstractBoid
         currentDirection = direction.normalized;        
     }
 
+    public Boid2D(Vector2 position, Vector2 direction, BoidConfiguration config) : this(position, direction)
+    {
+        base.Construct(config);
+    }
+
+    public Boid2D(Vector2 position, Vector2 direction, BoidConfiguration config, Rect simulateArea, bool unlimSpace) : this(position, direction, config)
+    {
+        Construct(config, simulateArea, unlimSpace);
+    }
+
     public AbstractBoid Construct(BoidConfiguration config, Rect simulateArea, bool unlimSpace)
     {
         cage = simulateArea;
@@ -51,27 +61,25 @@ public class Boid2D : AbstractBoid
         return base.Construct(config);
     }
 
-    public override void Update()
-    {
-        base.Update();
-        UpdatePosition();
-    }
-
-    public void Update(List<Boid2D> boids, BoidsBehaviourPreset preset)
+    public override void UpdateVectors(List<IBoid> boids, BoidsBehaviourPreset preset)
     {
         Vector2 aligment = Vector2.zero;
         Vector2 cohesion = Vector2.zero;
         Vector2 separation = Vector2.zero;
+
+        Vector2 area = Vector2.zero;
+
         int countOfNearby = 0;
         for (int i = boids.Count - 1; i >= 0; i--)
         {
-            if (boids[i] != this && IsNearby(boids[i]))
+            Boid2D boid = (Boid2D)boids[i];
+            if (boid != this && IsNearby(boid))
             {
-                aligment += boids[i].Velocity;
-                cohesion += boids[i].Position;
+                aligment += boid.Velocity;
+                cohesion += boid.Position;
 
-                float distance = Vector2.Distance(Position, boids[i].Position);
-                separation += (Position - boids[i].Position) / distance;
+                float distance = Vector2.Distance(Position, boid.Position);
+                separation += (Position - boid.Position) / Mathf.Pow(distance, 2);
 
                 countOfNearby++;
             }
@@ -83,9 +91,7 @@ public class Boid2D : AbstractBoid
             cohesion /= (float)countOfNearby;
             separation /= (float)countOfNearby;
 
-            //resultVelocity = resultVelocity.normalized;
             cohesion -= Position;
-            //resultPosition = resultPosition.normalized;
 
             aligment *= preset.aligment;
             cohesion *= preset.cohesion;
@@ -94,14 +100,14 @@ public class Boid2D : AbstractBoid
             Vector2 newForce = (cohesion + aligment + separation);
 
             currentDirection = (newForce + currentDirection).normalized;
-            //currentDirection = (resultVelocity.normalized * config.maxConnectForce + currentDirection).normalized;
         }
     }
 
-    protected override void UpdatePosition()
+    public override void UpdatePosition()
     {
+        base.UpdatePosition();
         Position += Velocity;
-        if (useSpace)
+        if (useSpace && unlimitSpace)
         {
             UpdatePositionInCage();
         }
@@ -109,29 +115,26 @@ public class Boid2D : AbstractBoid
 
     protected void UpdatePositionInCage()
     {
-        if (unlimitSpace)
+        Vector2 fixVector = Vector2.zero;
+        if (Position.x < cage.x)
         {
-            Vector2 fixVector = Vector2.zero;
-            if (Position.x < cage.x)
-            {
-                fixVector.x = cage.width;
-            }
-            else if (Position.x > cage.xMax)
-            {
-                fixVector.x = -cage.width;
-            }
-
-            if (Position.y < cage.y)
-            {
-                fixVector.y = cage.height;
-            }
-            else if (Position.y > cage.yMax)
-            {
-                fixVector.y = -cage.height;
-            }
-
-            Position += fixVector;
+            fixVector.x = cage.width;
         }
+        else if (Position.x > cage.xMax)
+        {
+            fixVector.x = -cage.width;
+        }
+
+        if (Position.y < cage.y)
+        {
+            fixVector.y = cage.height;
+        }
+        else if (Position.y > cage.yMax)
+        {
+            fixVector.y = -cage.height;
+        }
+
+        Position += fixVector;
     }
 
     public override bool IsNearby(IBoid boid)

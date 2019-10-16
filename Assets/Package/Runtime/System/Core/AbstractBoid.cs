@@ -1,28 +1,41 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public abstract class AbstractBoid : IBoid
 {
     protected float speed;
     protected BoidConfiguration config;
 
-    public virtual void Update()
+    public BoidConfiguration Config
+    {
+        get
+        {
+            return config;
+        }
+
+        set
+        {
+            config = value;
+        }
+    }
+
+    public virtual void UpdatePosition()
     {
         Axelerate();
     }
 
-    protected void Axelerate()
+    protected virtual void Axelerate()
     {
         speed = Mathf.Min(speed + config.axeleration, config.maxSpeed);
     }
 
     public virtual AbstractBoid Construct(BoidConfiguration config)
     {
-        this.config = config;
+        Config = config;
         return this;
-    }
-
-    protected abstract void UpdatePosition();
+    }   
 
     public abstract bool IsNearby(IBoid boid);
+    public abstract void UpdateVectors(List<IBoid> boids, BoidsBehaviourPreset preset);
 }

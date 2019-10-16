@@ -8,10 +8,11 @@ public class SpriteBoidsController : MonoBehaviour
     public BoidConfiguration configuration;
     public BoidsBehaviourPreset preset;
     public Rect spawnArea;
+    public bool unlimSpace;
     [Range(1, 100)]
     public int spawnBoidsCount;
 
-    protected List<Boid2D> boidsList = new List<Boid2D>();
+    protected List<IBoid> boidsList = new List<IBoid>();
 
     private void Start()
     {
@@ -28,8 +29,10 @@ public class SpriteBoidsController : MonoBehaviour
     {
         for (int i = 0; i < boidsList.Count; i++)
         {
-            boidsList[i].Update(boidsList, preset);
-            boidsList[i].Update();
+            if(Time.frameCount % 2 == 0)
+                boidsList[i].UpdateVectors(boidsList, preset);
+
+            boidsList[i].UpdatePosition();
         }
 
         if (Input.GetMouseButtonDown(0))
@@ -41,12 +44,19 @@ public class SpriteBoidsController : MonoBehaviour
 
     protected void CreateBoid(Vector2 position, Vector2 velocity)
     {
-        Boid2D boid = new Boid2D(position, velocity);
-        boid.Construct(configuration, spawnArea, true);
+        Boid2D boid = new Boid2D(position, velocity, configuration, spawnArea, unlimSpace);
 
         Instantiate(boidPrefab, position, Quaternion.identity).InitBoid(boid);
 
         boidsList.Add(boid);
+    }
+
+    private void OnValidate()
+    {
+        for (int i = 0; i < boidsList.Count; i++)
+        {
+            ((Boid2D)boidsList[i]).Config = configuration;
+        }
     }
 }
 
